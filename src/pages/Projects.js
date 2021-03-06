@@ -1,7 +1,23 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import firebase from "../firebase";
 
 function Projects(props) {
+  const db = firebase.firestore();
+  const [projects, setProjects] = useState([]);
+  React.useEffect(() => {
+    const fetchAllProjects = async () => {
+      const data = await db.collection("projects").get();
+      setProjects(
+        data.docs.map((doc) => {
+          console.log(doc.data());
+          return { ...doc.data(), id: doc.id };
+        })
+      );
+    };
+    fetchAllProjects();
+  }, [db]);
+
   return (
     <section className='text-gray-600 body-font'>
       <div className='container px-5 py-24 mx-auto'>
