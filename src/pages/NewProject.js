@@ -1,16 +1,42 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import firebase from "../firebase";
 
 function NewProject(props) {
-  const { state, setState } = useState({
+  const db = firebase.firestore();
+  const { vendors, setVendors } = useState([]);
+  const { projectDetails, setProjectDetails } = useState({
     title: "",
-    vendor: "",
+    vendorId: "",
     date_created: "",
     projectType: "", //mobile app/web app
     teamMembers: [],
     repoLink: "",
     latestBuildTag: "",
   });
+
+  // save the product
+  React.useEffect(() => {
+    const submitProduct = async () => {
+      const projectCol = db.collection("projects");
+      await projectCol.doc(new Date().toString()).set({
+        ...projectDetails,
+      });
+    };
+    submitProduct();
+  }, []);
+
+  // fetch vendors
+  React.useEffect(() => {
+    async function fetchVendors() {
+      const vendorsData = await db.collection("vendors").get();
+      setVendors(
+        vendorsData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    }
+    fetchVendors();
+  }, []);
+
   return (
     <section className='text-left text-gray-600 body-font relative lg:w-8/12'>
       <div className='container px-5 py-12 mx-auto'>
@@ -81,16 +107,16 @@ function NewProject(props) {
                 </label>
                 <select
                   class='w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-${props.theme}-500 focus:bg-white focus:ring-2 focus:ring-${props.theme}-200 text-base outline-none text-gray-700 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out'
-                  name='animals'
+                  name='vendors'
                 >
-                  <option value=''>Select vendor</option>
-                  <option value='dog'>Dog</option>
-                  <option value='cat'>Cat</option>
-                  <option value='hamster'>Hamster</option>
-                  <option value='parrot'>Parrot</option>
-                  <option value='spider'>Spider</option>
-                  <option value='goldfish'>Goldfish</option>
-                </select>{" "}
+                  {vendors.map((vendor) => {
+                    return (
+                      <option value={vendor.id} key={vendor.id.toString()}>
+                        {vendor.name}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </div>
 
