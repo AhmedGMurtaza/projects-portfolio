@@ -1,11 +1,15 @@
 import React, { Component } from "react";
-import Frame from "react-frame-component";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { vs2015, docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { Switch, Link, Router, Route } from "react-router-dom";
 import getBlock from "../blocks";
 import getIcons from "../icons";
+
+// components
+import Header from "../components/Header";
+
+// Containers
 import NewProject from "./NewProject";
 import Projects from "./Projects";
+import Vendors from "./Vendors";
 
 const iconList = getIcons();
 const blockListArr = [];
@@ -394,66 +398,11 @@ class App extends Component {
           sidebar ? " has-sidebar" : ""
         } ${theme} ${view}`}
       >
-        <textarea className='copy-textarea' ref={this.textareaRef} />
-        <aside className='sidebar' ref={this.sidebarRef}>
-          {this.listRenderer()}
-        </aside>
         <div className='toolbar'>
-          <button
-            className='opener'
-            onClick={this.toggleSidebar}
-            ref={this.openerRef}
-          >
-            TAILBLOCKS
-          </button>
-          {this.state.codeView && (
-            <div className='clipboard-wrapper'>
-              <button
-                className='copy-the-block copy-to-clipboard'
-                onClick={this.copyToClipboard}
-              >
-                {clipboardIcon}
-                <span>COPY TO CLIPBOARD</span>
-              </button>
-              <span
-                className={`clipboard-tooltip${copied ? " is-copied " : ""}`}
-              >
-                Copied!
-              </span>
-            </div>
-          )}
-          <button className='copy-the-block' onClick={this.toggleView}>
-            {!this.state.codeView ? (
-              <svg
-                fill='none'
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                viewBox='0 0 24 24'
-              >
-                <path d='M16 18L22 12 16 6'></path>
-                <path d='M8 6L2 12 8 18'></path>
-              </svg>
-            ) : (
-              <svg
-                fill='none'
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                className='css-i6dzq1'
-                viewBox='0 0 24 24'
-              >
-                <path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'></path>
-                <circle cx='12' cy='12' r='3'></circle>
-              </svg>
-            )}
-            <span>{!this.state.codeView ? "VIEW CODE" : "PREVIEW"}</span>
-          </button>
+          <Header theme={theme} />
           <div className='switcher'>{this.themeListRenderer()}</div>
-          {this.viewModeRenderer()}
-          <button className='mode' onClick={this.changeMode}></button>
+          {/* dark/light mode */}
+          {/* <button className='mode' onClick={this.changeMode}></button> */}
         </div>
         <div className='markup' ref={this.markupRef}>
           {getBlock({ theme, darkMode })[blockType][blockName]}
@@ -461,7 +410,8 @@ class App extends Component {
         {/* view area  */}
         <main className='main'>
           {/* <NewProject theme={theme} /> */}
-          <Projects theme={theme} />
+          {/* <Projects theme={theme} /> */}
+          <Vendors theme={theme} />
         </main>
         {/* view area  */}
         <a
