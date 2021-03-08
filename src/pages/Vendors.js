@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import firebase from "../firebase";
-import moment from "moment";
 
 function Vendors(props) {
   const db = firebase.firestore();
@@ -14,7 +13,7 @@ function Vendors(props) {
 
   const submitVendor = () => {
     const vendorCol = db.collection("vendors");
-    vendorCol.doc(moment().format("YYYY-MM-DD HH:MM:SS")).set({
+    vendorCol.add({
       ...currentVendor,
     });
     // empty all fields
