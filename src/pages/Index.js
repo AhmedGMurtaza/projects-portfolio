@@ -7,7 +7,7 @@ import getIcons from "../icons";
 import Header from "../components/Header";
 
 // Containers
-import NewProject from "./NewProject";
+import Project from "./Project";
 import Projects from "./Projects";
 import Vendors from "./Vendors";
 
@@ -391,14 +391,11 @@ class App extends Component {
               <Route exact path='/'>
                 <Projects theme={theme} />
               </Route>
-              <Route path='/projects'>
+              <Route exact path='/projects'>
                 <Projects theme={theme} />
               </Route>
-              <Route path='/new-project'>
-                <NewProject theme={theme} />
-              </Route>
               <Route path='/projects/:id'>
-                <NewProject theme={theme} />
+                <Project theme={theme} />
               </Route>
               <Route path='/vendors'>
                 <Vendors theme={theme} />
